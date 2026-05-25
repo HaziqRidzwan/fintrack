@@ -39,6 +39,21 @@ public class TransactionController {
                 categoryService.getAllCategory()
         );
 
+        model.addAttribute(
+                "totalIncome",
+                transactionService.getTotalIncome()
+        );
+
+        model.addAttribute(
+                "totalExpense",
+                transactionService.getTotalExpense()
+        );
+
+        model.addAttribute(
+                "balance",
+                transactionService.getBalance()
+        );
+
         return "transactions";
     }
 
