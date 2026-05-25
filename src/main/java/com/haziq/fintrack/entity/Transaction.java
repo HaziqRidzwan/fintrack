@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Transaction {
@@ -17,6 +19,10 @@ public class Transaction {
     private Double amount;
 
     private String type;
+
+    @ManyToOne // many transactions can belong to one category
+    @JoinColumn(name = "category_id") // In database, create a column called category_id to connect them
+    private Category category; // This transaction is linked to a Category object
 
     public Long getId() {
         return id;
@@ -44,5 +50,13 @@ public class Transaction {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

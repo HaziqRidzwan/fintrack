@@ -1,6 +1,7 @@
 package com.haziq.fintrack.controller;
 
 import com.haziq.fintrack.entity.Transaction;
+import com.haziq.fintrack.service.CategoryService;
 import com.haziq.fintrack.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +15,31 @@ import org.springframework.web.servlet.view.RedirectView;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final CategoryService categoryService;
 
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(
+            TransactionService transactionService,
+            CategoryService categoryService
+    ) {
         this.transactionService = transactionService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/transactions") // when user opens /transactions page
     public String getTransactions(Model model) { // Model = container to send data to HTML page
-        model.addAttribute( // put data into the container
-                "transactions", // variable name used in HTML
-                transactionService.getAllTransactions() // get all transactions from database
+        // get all transactions from DB
+        model.addAttribute(
+                "transactions",
+                transactionService.getAllTransactions()
         );
-        return "transactions"; // open transactions.html page
+
+        // send categories to HTML for dropdown
+        model.addAttribute(
+                "categories",
+                categoryService.getAllCategory()
+        );
+
+        return "transactions";
     }
 
     @PostMapping("/transactions/save") // when user submits save form
