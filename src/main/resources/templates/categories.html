@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Categories</title>
+</head>
+
+<body>
+
+<h1>Transaction Categories</h1>
+
+<!-- ========================= -->
+<!-- ADD CATEGORY FORM -->
+<!-- ========================= -->
+
+<h2>Add Category</h2>
+
+<form action="/categories/save" method="post">
+
+    <!-- category name label -->
+    <label>Category Name:</label>
+
+    <!-- input textbox -->
+    <!-- name="name" MUST match entity field -->
+    <input type="text" name="name">
+
+    <br><br>
+
+    <!-- submit button -->
+    <button type="submit">
+        Save Category
+    </button>
+
+</form>
+
+<hr>
+
+<!-- ========================= -->
+<!-- CATEGORY TABLE -->
+<!-- ========================= -->
+
+<h2>All Categories</h2>
+
+<table border="1">
+
+    <!-- table header -->
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+
+    <!-- loop through all categories -->
+    <tr th:each="category : ${categories}">
+
+        <!-- display category id -->
+        <td th:text="${category.id}"></td>
+
+        <!-- display category name -->
+        <td th:text="${category.name}"></td>
+
+        <!-- action buttons -->
+        <td>
+
+            <!-- delete button -->
+            <a th:href="@{/categories/delete/{id}(id=${category.id})}">
+
+                Delete
+
+            </a>
+
+        </td>
+
+    </tr>
+
+</table>
+
+</body>
+</html>
