@@ -4,6 +4,7 @@ import com.haziq.fintrack.entity.Transaction;
 import com.haziq.fintrack.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController // RestController means: return JSON data directly, NOT HTML page
 @RequestMapping("/api/transactions") // base URL for all APIs in this controller
@@ -22,7 +23,7 @@ public class TransactionApiController {
 
     @PostMapping // POST /api/transactions, create new transaction
     public Transaction saveTransaction(
-            @RequestBody Transaction transaction // RequestBody means: convert incoming JSON into Java object
+            @Valid @RequestBody Transaction transaction // RequestBody means: convert incoming JSON into Java object
     ) {
         transactionService.save(transaction); // save into database
         return transaction; // return saved object as JSON
