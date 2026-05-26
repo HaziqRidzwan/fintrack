@@ -1,7 +1,10 @@
 package com.haziq.fintrack.controller;
 
+import com.haziq.fintrack.dto.TransactionRequestDto;
+import com.haziq.fintrack.entity.Category;
 import com.haziq.fintrack.entity.Transaction;
 import com.haziq.fintrack.service.TransactionService;
+import com.haziq.fintrack.dto.TransactionResponseDto;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import jakarta.validation.Valid;
@@ -17,16 +20,43 @@ public class TransactionApiController {
     }
 
     @GetMapping // GET /api/transactions, retrieve all transactions
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions(); // call service to get all data
+    public List<TransactionResponseDto> getAllTransactions() {
+        return transactionService.getAllTransactionDtos(); // call service to get all data
     }
 
-    @PostMapping // POST /api/transactions, create new transaction
-    public Transaction saveTransaction(
-            @Valid @RequestBody Transaction transaction // RequestBody means: convert incoming JSON into Java object
+    @PostMapping
+    public String saveTransaction(
+
+            @Valid
+            @RequestBody
+            TransactionRequestDto dto
     ) {
-        transactionService.save(transaction); // save into database
-        return transaction; // return saved object as JSON
+
+        // create entity object
+        Transaction transaction = new Transaction();
+
+        // copy title from dto into entity
+        transaction.setTitle(dto.getTitle());
+
+        // copy amount
+        transaction.setAmount(dto.getAmount());
+
+        // copy type
+        transaction.setType(dto.getType());
+
+        // create category object
+        Category category = new Category();
+
+        // set category id from dto
+        category.setId(dto.getCategoryId());
+
+        // set category into transaction
+        transaction.setCategory(category);
+
+        // save entity into database
+        transactionService.save(transaction);
+
+        return "Transaction saved successfully";
     }
 
     @DeleteMapping("/{id}") // DELETE /api/transactions/1

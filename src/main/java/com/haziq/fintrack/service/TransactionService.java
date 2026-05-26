@@ -3,7 +3,9 @@ package com.haziq.fintrack.service;
 import com.haziq.fintrack.entity.Transaction;
 import com.haziq.fintrack.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
+import com.haziq.fintrack.dto.TransactionResponseDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,5 +56,42 @@ public class TransactionService {
     public double getBalance() {
         // income minus expense
         return getTotalIncome() - getTotalExpense();
+    }
+
+    public List<TransactionResponseDto> getAllTransactionDtos() {
+
+        // get all entities from database
+        List<Transaction> transactions =  transactionRepository.findAll();
+
+        // create empty DTO list
+        List<TransactionResponseDto> dtoList = new ArrayList<>();
+
+        // loop all transactions
+        for (Transaction transaction : transactions) {
+
+            // create DTO object
+            TransactionResponseDto dto = new TransactionResponseDto();
+
+            // copy id from entity to dto
+            dto.setId(transaction.getId());
+
+            // copy title
+            dto.setTitle(transaction.getTitle());
+
+            // copy amount
+            dto.setAmount(transaction.getAmount());
+
+            // copy type
+            dto.setType(transaction.getType());
+
+            // copy category name only
+            dto.setCategoryName(transaction.getCategory().getName());
+
+            // add dto into list
+            dtoList.add(dto);
+        }
+
+        // return dto list
+        return dtoList;
     }
 }

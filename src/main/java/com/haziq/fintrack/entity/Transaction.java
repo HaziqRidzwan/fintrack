@@ -6,9 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Transaction {
@@ -17,14 +14,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotNull(message = "Amount is required")
-    @Positive(message = "Amount must be positive")
     private Double amount;
 
-    @NotBlank(message = "Type is required")
     private String type;
 
     @ManyToOne // many transactions can belong to one category
