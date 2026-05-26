@@ -21,7 +21,7 @@ public class Transaction {
     private String type;
 
     @ManyToOne // many transactions can belong to one category
-    @JoinColumn(name = "category_id") // In database, create a column called category_id to connect them
+    @JoinColumn(name = "category_id", nullable = false) // In database, create a column called category_id to connect them
     private Category category; // This transaction is linked to a Category object
 
     public Long getId() {

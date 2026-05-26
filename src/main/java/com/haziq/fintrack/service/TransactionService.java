@@ -1,6 +1,9 @@
 package com.haziq.fintrack.service;
 
+import com.haziq.fintrack.dto.TransactionRequestDto;
+import com.haziq.fintrack.entity.Category;
 import com.haziq.fintrack.entity.Transaction;
+import com.haziq.fintrack.repository.CategoryRepository;
 import com.haziq.fintrack.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import com.haziq.fintrack.dto.TransactionResponseDto;
@@ -12,12 +15,25 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
 
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
+        this.categoryRepository = categoryRepository;
     }
 
-    public void save(Transaction transaction) {
+    public void save(TransactionRequestDto dto) {
+        // get category from DB using dto
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        // create entity
+        Transaction transaction = new Transaction();
+
+        transaction.setTitle(dto.getTitle());
+        transaction.setAmount(dto.getAmount());
+        transaction.setType(dto.getType());
+        transaction.setCategory(category);
+
         transactionRepository.save(transaction);
     }
 

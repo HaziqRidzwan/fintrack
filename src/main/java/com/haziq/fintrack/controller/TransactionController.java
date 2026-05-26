@@ -1,5 +1,6 @@
 package com.haziq.fintrack.controller;
 
+import com.haziq.fintrack.dto.TransactionRequestDto;
 import com.haziq.fintrack.entity.Transaction;
 import com.haziq.fintrack.service.CategoryService;
 import com.haziq.fintrack.service.TransactionService;
@@ -57,23 +58,12 @@ public class TransactionController {
         return "transactions";
     }
 
-    @PostMapping("/transactions/save") // when user submits save form
-    public RedirectView saveTransaction(
+    @PostMapping("/transactions/save")
+    public RedirectView saveTransaction(@ModelAttribute TransactionRequestDto dto) {
 
-            @ModelAttribute Transaction transaction
-            // ModelAttribute = take form values and automatically create Transaction object
-            // Example:
-            // title=Food
-            // amount=20
-            // type=EXPENSE
-            // becomes:
-            // transaction.setTitle("Food")
-            // transaction.setAmount(20)
-            // transaction.setType("EXPENSE")
+        transactionService.save(dto);
 
-    ) {
-        transactionService.save(transaction); // save transaction into database
-        return new RedirectView("/transactions"); // after save, go back to /transactions page
+        return new RedirectView("/transactions");
     }
 
     @GetMapping("/transactions/delete/{id}")

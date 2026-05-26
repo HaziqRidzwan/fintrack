@@ -32,29 +32,8 @@ public class TransactionApiController {
             TransactionRequestDto dto
     ) {
 
-        // create entity object
-        Transaction transaction = new Transaction();
-
-        // copy title from dto into entity
-        transaction.setTitle(dto.getTitle());
-
-        // copy amount
-        transaction.setAmount(dto.getAmount());
-
-        // copy type
-        transaction.setType(dto.getType());
-
-        // create category object
-        Category category = new Category();
-
-        // set category id from dto
-        category.setId(dto.getCategoryId());
-
-        // set category into transaction
-        transaction.setCategory(category);
-
-        // save entity into database
-        transactionService.save(transaction);
+        // send dto into service
+        transactionService.save(dto);
 
         return "Transaction saved successfully";
     }
